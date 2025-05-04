@@ -30,7 +30,7 @@ const TaskForm = ({ onClose, onSuccess }: Props) => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ ...data, status: true }),
+        body: JSON.stringify({ ...data, status: false }),
       });
 
       if (res.ok) {
