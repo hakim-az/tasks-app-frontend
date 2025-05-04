@@ -1,5 +1,10 @@
 [[redirects]]
-  force = true
-  from = "/scripts/x.js"
+  from = "/pathx"
+  to = "https://tranquil-river-53049-65f1a1de2e8e.herokuapp.com/tasks"
   status = 200
-  to = "https://www.example.com/scripts/x.js"
+  force = true
+  headers = {X-From = "Netlify"}
+[[headers]]
+  for = "/*"
+  [headers.values]
+    Access-Control-Allow-Origin = "*"
