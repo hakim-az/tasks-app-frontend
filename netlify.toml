@@ -1,6 +1,6 @@
 [[redirects]]
   from = "/pathx"
-  to = "https://tranquil-river-53049-65f1a1de2e8e.herokuapp.com/tasks"
+  to = "https://tranquil-river-53049-65f1a1de2e8e.herokuapp.com"
   status = 200
   force = true
   headers = {X-From = "Netlify"}
