@@ -1,5 +1,6 @@
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
+import { useState } from "react";
 
 interface FormValues {
   title: string;
@@ -16,9 +17,13 @@ const TaskForm = ({ onClose, onSuccess }: Props) => {
     register,
     handleSubmit,
     formState: { errors },
+    reset,
   } = useForm<FormValues>();
 
+  const [loading, setLoading] = useState(false);
+
   const onSubmit = async (data: FormValues) => {
+    setLoading(true);
     try {
       const res = await fetch("/api/tasks", {
         method: "POST",
@@ -29,39 +34,54 @@ const TaskForm = ({ onClose, onSuccess }: Props) => {
       });
 
       if (res.ok) {
-        toast.success("Task created successfully");
+        toast.success("Task created successfully", {
+          onClose: () => {
+            setLoading(false);
+            onClose();
+          },
+        });
         onSuccess();
-        onClose();
+        reset();
       } else {
         throw new Error("Failed to create task");
       }
     } catch (error) {
-      toast.error("Failed to create task");
+      toast.error("Failed to create task", {
+        onClose: () => {
+          setLoading(false);
+        },
+      });
       console.error(error);
     }
   };
-
+  
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <div>
-        <label>Title *</label>
+    <form onSubmit={handleSubmit(onSubmit)} className="w-full flex flex-col gap-4">
+      <div className="flex flex-col gap-3">
+        <label className="font-semibold">Title <span className="text-red-600">*</span></label>
         <input
           {...register("title", { required: "Title is required" })}
-          className="border w-full p-2 rounded"
+          className="border h-10 border-gray-300 w-full p-2 rounded focus:outline-blue-500 focus:outline-2"
+          disabled={loading}
         />
         {errors.title && (
           <p className="text-red-500">{errors.title.message}</p>
         )}
       </div>
-      <div className="mt-2">
-        <label>Description</label>
-        <textarea {...register("description")} className="border w-full p-2 rounded" />
+      <div className="flex flex-col gap-3">
+        <label className="font-semibold">Description</label>
+        <textarea
+          {...register("description")}
+          className="border border-gray-300 h-32 w-full resize-none focus:outline-blue-500 focus:outline-2 p-2 rounded"
+          disabled={loading}
+        />
       </div>
       <button
         type="submit"
-        className="mt-4 bg-blue-500 text-white py-2 px-4 rounded"
+        disabled={loading}
+        className={`mt-8 disabled:cursor-not-allowed disabled:opacity-70 cursor-pointer hover:opacity-70 transition-all ease-in-out delay-75 bg-blue-500 text-white py-2 px-4 rounded ${loading ? 'opacity-50 cursor-not-allowed' : ''}`}
       >
-        Create
+        {loading ? 'Creating...' : 'Create'}
       </button>
     </form>
   );
