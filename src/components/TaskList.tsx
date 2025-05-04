@@ -10,7 +10,7 @@ const TaskList = () => {
 
   const fetchTasks = useCallback(async () => {
     try {
-      const res = await fetch(import.meta.env.VITE_API_URL); 
+      const res = await fetch('/api/tasks'); 
       const data = await res.json();
       console.log("Fetched tasks response:", data);
       setTasks(data.data);

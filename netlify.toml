@@ -1,10 +1,5 @@
 [[redirects]]
-  from = "/pathx"
-  to = "https://tranquil-river-53049-65f1a1de2e8e.herokuapp.com"
+  from = "/api/*"
+  to = "https://tranquil-river-53049-65f1a1de2e8e.herokuapp.com/:splat"
   status = 200
   force = true
-  headers = {X-From = "Netlify"}
-[[headers]]
-  for = "/*"
-  [headers.values]
-    Access-Control-Allow-Origin = "*"
